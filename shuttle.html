@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<head>
+
+	<title>WFU | RideTheWake</title>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta name="description" content="View Wake Forest University shuttles in realtime. 
+	Find out shuttle times, stops, and route directions." />
+	<meta name="KEYWORDS" content="ridethewake, shuttle, shuttles, bus schedule, schedules, Wake Forest shuttle service,
+	Wake Forest University shuttle service, WFU shuttle, shuttle service, Wake Forest apartment shuttles,
+	Wake Forest University apartment shuttles, Wake Line, Gray Line, Black Line, downtown shuttle, Gold Line" />
+
+	<link rel="icon" type="image/png" href="favicon.ico">
+
+	<link type="text/css" rel="stylesheet" href="style.css" />
+
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+	
+	<script type="text/javascript">
+
+		var mapReferenceObject;
+
+		var shuttleMarkerReference;
+
+		var shuttleMarkerInfoWindow;
+
+		var shuttleLocation = [];
+
+		var mapPolyLine;
+
+		var shuttleLines = [];
+
+		var polyLine = [];
+
+		var stopMarkers = [];
+
+		var infoWindows = [];
+
+		var stopTimes = [];
+
+		var refreshFunction;
+
+		
+		shuttleLines.push(["black",14,36.15100,-80.27915,48,45,44,"black","Black Line"]);
+		
+		
+		shuttleLines.push(["grayDay",14,36.130727,-80.25795,135,136,135,"gray","Gray Line"]);
+		
+		
+		shuttleLines.push(["grayNight",15,36.13666,-80.27808,135,136,135,"night","Gray Line"]);
+		
+		
+		shuttleLines.push(["gold",14,36.13562,-80.28790,219,175,78,"gold","Gold Line"]);
+		
+		
+		shuttleLines.push(["freshmen",14,36.13290,-80.26672,137,78,78,"green","Freshmen Line"]);
+		
+		
+		shuttleLines.push(["hanes",12,36.11834,-80.29604,93,125,92,"hanes","Hanes Mall Line"]);
+		
+		
+		shuttleLines.push(["downtown",13,36.12125,-80.25824,71,80,131,"downtown","Deacon's Downtown Line"]);
+		
+		
+		function initialize()
+		{
+	        
+	        var mapOptions = { center: {lat:shuttleLines[0][2],lng:shuttleLines[0][3]}, zoom: shuttleLines[0][1]};
+
+	        var map = new google.maps.Map(document.getElementById('mapCanvas'), mapOptions);
+
+	        mapReferenceObject = map;
+
+	        loadLine(0, map);
+
+	    }
+	    
+	    google.maps.event.addDomListener(window, 'load', initialize);
+
+	    function changeLine(lineID)
+		{
+
+			clearInterval(refreshFunction);
+
+			mapReferenceObject.setOptions({center:{lat:shuttleLines[lineID][2], lng: shuttleLines[lineID][3]}, zoom:shuttleLines[lineID][1]});
+
+			clearMarkers();
+
+			loadLine(lineID, mapReferenceObject);
+
+			if(document.getElementById("scheduleContent").innerHTML != "")
+			{
+				showSchedule();
+			}
+
+		}
+
+		function loadLine(lineID, map)
+		{
+
+	        loadShuttleSchedule(lineID);
+
+	        loadPolyline(lineID, map);
+
+	        downloadStopsFile(lineID);
+
+			initializeShuttleMarker(lineID, map);
+
+	        autoRefresh(lineID, map);
+
+		}
+
+	    function loadPolyline(lineID, map)
+		{
+
+			downloadRouteFile(lineID);
+
+			if (mapPolyLine == null)
+			{
+
+				mapPolyLine = new google.maps.Polyline({
+
+					geodesic: false,
+					strokeOpacity: 0.7,
+					map: map,
+					strokeWeight: 5
+
+				});
+
+			}
+
+			mapPolyLine.setOptions({strokeColor:rgbToHex(shuttleLines[lineID][4], shuttleLines[lineID][5], shuttleLines[lineID][6])});
+
+			mapPolyLine.setPath(polyLine);
+
+		}
+
+		function rgbToHex(r, g, b)
+		{
+
+    		return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+
+		}
+
+		function downloadRouteFile(lineID)
+		{
+
+			$.ajax({
+			type: "GET",
+			url: "routes/"+shuttleLines[lineID][0]+"Route.csv",
+			dataType: "text",
+			async: false,
+			success: function(data) { processRouteCoordinates(data); }
+			});
+
+		}
+
+		function processRouteCoordinates(routeCoordinatesData)
+		{
+
+			if(polyLine != [])
+			{
+
+				polyLine = [];
+
+			}
+
+		    var coordinateData = routeCoordinatesData.split(/\r\n|\n/);
+
+		    for (var i=0; i<coordinateData.length; i++)
+		    {
+
+		        var data = coordinateData[i].split(',');
+
+	            var coordinate = new google.maps.LatLng(data[0],data[1]);
+
+	            polyLine.push(coordinate);
+
+		    }
+
+		}
+
+		function downloadStopsFile(lineID)
+		{
+
+			$.ajax({
+			type: "GET",
+			url: "stops/"+shuttleLines[lineID][0]+"Stops.xml",
+			dataType: "text",
+			async: false,
+			success: function(data) { loadStops(data, lineID); }
+			});
+
+		}
+
+		function loadStops(data, lineID)
+		{
+
+			$(data).find('stop').each(function()
+			{
+
+				var stop = [];
+				stop[0] = $(this).attr("name");
+				stop[1] = $(this).attr("times");
+
+				stopTimes.push(stop);
+
+			    var stopCoordinates = new google.maps.LatLng($(this).attr("coordinateLat"),$(this).attr("coordinateLon"));
+
+			    var stopMarker = new google.maps.Marker({
+				    position: stopCoordinates,
+				    map: mapReferenceObject
+			    });
+
+				var infowindow = new google.maps.InfoWindow({
+			      content: "<div class='infoWindow'><b>"+$(this).attr('name')+"</b><br>"+$(this).attr("times")+"</div>"
+			 	});
+
+			 	google.maps.event.addListener(stopMarker, 'click', function() {
+			    	infowindow.open(mapReferenceObject,stopMarker);
+			 	});
+
+			 	stopMarkers.push(stopMarker);
+
+			 	infoWindows.push(infowindow);
+
+		    });
+
+		    $(data).find('stopInformation').each(function()
+		    {
+		    	stopTimes.push($(this).attr("info"));
+		    });
+
+		}
+
+		function clearMarkers()
+		{
+
+			for (var i = 0; i < stopMarkers.length; i++) {
+    			stopMarkers[i].setMap(null);
+  			}
+
+  			stopMarkers = [];
+
+  			for (var i = 0; i < infoWindows.length; i++) {
+    			infoWindows[i].setMap(null);
+  			}
+
+  			infoWindows = [];
+
+  			stopTimes = [];
+
+  			shuttleMarkerReference.setMap(null);
+
+		}
+
+		function initializeShuttleMarker(lineID, map)
+		{
+			
+		    var image ='img/shuttleMarkers/'+shuttleLines[lineID][0]+'ShuttleMarker.png';
+
+		    downloadShuttleLocation(lineID);
+
+		    var shuttleCoordinates = new google.maps.LatLng(shuttleLocation[0],shuttleLocation[1]);
+
+		    shuttleMarkerReference = new google.maps.Marker({
+			    position: shuttleCoordinates,
+			    zIndex: 100,
+			    map: map,
+			    icon: image
+		    });
+
+		   	shuttleMarkerInfoWindow = new google.maps.InfoWindow({
+		      content: "<div class='infoWindow'>Updated at "+shuttleLocation[2]+".<br>There are "+shuttleLocation[3]+" passengers.</div>",
+		      maxWidth: 200
+		 	});
+
+		 	google.maps.event.addListener(shuttleMarkerReference, 'click', function()
+		 	{
+
+		    	shuttleMarkerInfoWindow.open(map,shuttleMarkerReference);
+
+		 	});
+
+		}
+
+		function downloadShuttleLocation(lineID)
+		{
+
+			$.ajax({
+			type: "GET",
+			url: ""+shuttleLines[lineID][7]+".xml",
+			dataType: "text",
+			async: false,
+			success: function(data) { setShuttleLocationData(data); }
+			});
+
+		}
+
+		function setShuttleLocationData(data)
+		{
+		
+			$(data).find('marker').each(function()
+			{
+
+			    shuttleLocation[0] = $(this).attr("lat");
+			    shuttleLocation[1] = $(this).attr("lng");
+			    var str = $(this).attr("time");
+			    var split = str.split(":");
+			    var d = new Date(2014, 10, 20, split[0], split[1], split[2], 00);
+			    shuttleLocation[2] = formatAMPM(d);
+			    shuttleLocation[3] = $(this).attr("passenger");
+
+		    });
+
+		}
+
+		function formatAMPM(date)
+		{
+			var hours = date.getHours();
+			var minutes = date.getMinutes();
+			var ampm = hours >= 12 ? 'pm' : 'am';
+			hours = hours % 12;
+			hours = hours ? hours : 12;
+			minutes = minutes < 10 ? '0'+minutes : minutes;
+			var strTime = hours + ':' + minutes + ' ' + ampm;
+			return strTime;
+		}
+
+		function autoRefresh(lineID, mapReference)
+		{
+
+			refreshFunction = window.setInterval(function(){changeShuttleLocation(lineID, mapReference)}, 5000);
+
+		}
+
+		function changeShuttleLocation(lineID, mapReference)
+		{
+
+			downloadShuttleLocation(lineID);
+		    
+		    var shuttleCoordinates = new google.maps.LatLng(shuttleLocation[0],shuttleLocation[1]);
+
+		    shuttleMarkerReference.setOptions({position:shuttleCoordinates});
+
+		    shuttleMarkerInfoWindow.setOptions({content:"<div class='infoWindow'>Updated at "+shuttleLocation[2]+".<br>There are "+shuttleLocation[3]+" passengers.</div>"});
+
+		}
+
+		function loadShuttleSchedule(lineID)
+		{
+
+			document.getElementById("line").innerHTML = shuttleLines[lineID][8];
+
+		}
+
+		function showSchedule()
+		{
+
+			document.getElementById("showSchedule").innerHTML = "<a href='#' onClick='hideSchedule()'>▿ Hide shuttle schedule</a>";
+
+			var HTML = "<table>";
+
+			for(var j=0; j<stopTimes.length-1; j++)
+			{
+			    HTML += "<tr><th>"+stopTimes[j][0]+"</th></tr><tr><td>"+stopTimes[j][1]+"</td></tr>";
+			}
+
+			HTML += "</table><br>"+stopTimes[stopTimes.length-1];
+
+			document.getElementById("scheduleContent").innerHTML = HTML;
+
+		}
+
+		function hideSchedule()
+		{
+
+			document.getElementById("showSchedule").innerHTML = "<a href='#' onClick='showSchedule()'>▹ Show shuttle schedule</a>";
+
+			document.getElementById("scheduleContent").innerHTML = "";
+
+		}
+
+	</script>
+
+</head>
+
+<body>
+
+<div id="container">
+
+	<header><div id="logo"><span class="gold">Wake Forest University</span> Sajant</div></header>
+
+
+	<div id="shuttleMap">
+		<div id="mapCanvas"></div>
+		<div id="statusPanel">
+			<b><span id="line">Black Line</span></b>
+			<br><span id="showSchedule"><a href="#" onClick="showSchedule()">▹ Show shuttle schedule</a></span>
+			<div id="scheduleContent"></div>
+		</div>
+	</div>
+
+	<div id="sidebar">
+
+		<div class = "title">Shuttle Routes</div>
+
+		<ul>
+
+					<a href="#" onclick="changeLine(0)">
+				<li>
+
+				<div class="shuttleIcon"><img src="img/shuttleIcons/blackShuttleIcon.png" width='30px' \></div>
+				<div class="shuttleInfo">
+					<span class="shuttleName">Black Line</span><br>
+					<span class="shuttleStops">Alaris Village, Deacon Ridge, Crowne Oaks, Bus Stop Shelter</span>
+				</div>
+
+				</li>
+			</a>
+					<a href="#" onclick="changeLine(1)">
+				<li>
+
+				<div class="shuttleIcon"><img src="img/shuttleIcons/grayDayShuttleIcon.png" width='30px' \></div>
+				<div class="shuttleInfo">
+					<span class="shuttleName">Gray Day Line</span><br>
+					<span class="shuttleStops">Sophomore Lot, Church Lot, Bus Stop Shelter, Freshman Lot</span>
+				</div>
+
+				</li>
+			</a>
+					<a href="#" onclick="changeLine(2)">
+				<li>
+
+				<div class="shuttleIcon"><img src="img/shuttleIcons/grayNightShuttleIcon.png" width='30px' \></div>
+				<div class="shuttleInfo">
+					<span class="shuttleName">Gray Night Line</span><br>
+					<span class="shuttleStops">ZSR, Sophomore Lot, Piccolo, Reynolds Gym, and more...</span>
+				</div>
+
+				</li>
+			</a>
+					<a href="#" onclick="changeLine(3)">
+				<li>
+
+				<div class="shuttleIcon"><img src="img/shuttleIcons/goldShuttleIcon.png" width='30px' \></div>
+				<div class="shuttleInfo">
+					<span class="shuttleName">Gold Line</span><br>
+					<span class="shuttleStops">ZSR, Crowne Polo, Crowne Park, Crystal Lake, WFU Gatehouse</span>
+				</div>
+
+				</li>
+			</a>
+					<a href="#" onclick="changeLine(4)">
+				<li>
+
+				<div class="shuttleIcon"><img src="img/shuttleIcons/freshmenShuttleIcon.png" width='30px' \></div>
+				<div class="shuttleInfo">
+					<span class="shuttleName">Freshmen Line</span><br>
+					<span class="shuttleStops">Collins and South Hall, UCC Freshmen Lot</span>
+				</div>
+
+				</li>
+			</a>
+					<a href="#" onclick="changeLine(5)">
+				<li>
+
+				<div class="shuttleIcon"><img src="img/shuttleIcons/hanesShuttleIcon.png" width='30px' \></div>
+				<div class="shuttleInfo">
+					<span class="shuttleName">Hanes Mall Line</span><br>
+					<span class="shuttleStops">Benson, Hanes Mall, Sherwood Plaza, Target</span>
+				</div>
+
+				</li>
+			</a>
+					<a href="#" onclick="changeLine(6)">
+				<li>
+
+				<div class="shuttleIcon"><img src="img/shuttleIcons/downtownShuttleIcon.png" width='30px' \></div>
+				<div class="shuttleInfo">
+					<span class="shuttleName">Deacon's Downtown Line</span><br>
+					<span class="shuttleStops">The Last Resort, Tate's Bar, Finnigan's Pub, Benson</span>
+				</div>
+
+				</li>
+			</a>
+		
+		</ul>
+
+		<div id="iphoneAppAd">
+			Download the RideTheWake iPhone App
+			<div id="appIcon">
+				<a href="https://itunes.apple.com/us/app/ride-the-wake/id387439113"><img src="img/iphoneIcon.png" width="120px"></a>
+			</div>
+		</div>
+
+		<div id="about">
+			Developed by: Niclas Ladd '16<br>Faculty Advisor: Daniel A. Cañas<br><br>Department of Computer Science<br>Wake Forest University
+		</div>
+
+	</div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,203 @@
+html, body
+{
+	padding: 0;
+	margin: 0;
+	background: #E5E5E5;
+	font-family: Helvetica;
+	height: 100%;
+}
+
+#container
+{
+	margin: 0, auto;
+	padding: 0;
+	float:left;
+	width: 100%;
+	height: 100%;
+}
+
+header
+{
+	background-color: #20292C;
+	height: 10%;
+	color: #FFFFFF;
+	font-size: 19pt;
+}
+
+header #logo
+{
+	margin-left: 20pt;
+	position: absolute;
+	top: 3%;
+}
+
+header #logo .gold
+{
+	color: #DDB039;
+}
+
+#shuttleMap
+{	
+	width: 71%;
+	float: left;
+	height: 90%;
+	position: relative;
+	display:block;
+	position:relative; 
+	top:0px; 
+	left:0px; 
+	right: 0px;
+}
+
+#mapCanvas
+{
+	background-color: #FFFFFF;
+	height: 100%;
+	position: relative;
+}
+
+#statusPanel
+{
+	display:block;
+	position:absolute;
+	top:60px;
+	right: 20px; 
+	color: #fff;
+	z-index:99999;
+    background-color: #000000;
+    border: 2px solid #DDB039;
+	width: 250px;
+	padding: 8px;
+	opacity: 0.85;
+	filter: alpha(opacity=85);
+	font-size: 10pt;
+}
+
+#statusPanel a {
+	text-decoration: none;
+	color: #DDB039;
+	line-height: 15pt;
+
+}
+
+#statusPanel #green
+{
+	color: green;
+}
+
+#statusPanel #red
+{
+	color: red;
+	display: none;
+}
+
+#statusPanel #scheduleContent table
+{
+	width: 100%;
+	text-align: center;
+}
+
+#statusPanel #scheduleContent table th
+{
+	background: #181818;
+}
+
+.infoWindow
+{
+	width: 150px;
+	text-align: center;
+}
+
+#sidebar
+{
+	width: 29%;
+	float:right;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 90%;
+}
+
+#sidebar ul
+{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#sidebar ul a
+{
+	text-decoration: none;
+	color: #000000;
+}
+
+#sidebar ul a li
+{
+	display: block;
+	padding: 10pt;
+	margin: 1px;
+	width: 100%;
+	background-color: #FAFAFA;
+	float: left;
+}
+
+#sidebar ul a li .shuttleIcon
+{
+	width: 30px;
+	float: left;
+	margin-right: 8pt;
+}
+
+#sidebar ul a li .shuttleInfo
+{
+	width: 72%;
+	float: left;
+}
+
+#sidebar ul a li .shuttleInfo .shuttleName
+{
+	color: #000000;
+	font-size: 11pt;
+}
+
+#sidebar ul a li .shuttleInfo .shuttleStops
+{
+	font-size: 9pt;
+	color: #A0A0A0;
+	padding-top: 6pt;
+}
+
+.title
+{
+	width: auto;
+	display: block;
+	color:#FFFFFF;
+	text-align: center;
+	padding: 7pt;
+	font-size: 12pt;
+	background-color: #40494C;
+}
+
+#iphoneAppAd
+{
+	width: 100%;
+	float: left;
+	text-align: center;
+	margin: 10pt 0 10pt 0;
+	font-size: 10pt;
+}
+
+#iphoneAppAd #appIcon
+{
+	width: 120px;
+	margin: 10pt auto;
+}
+
+#about
+{
+	width: auto;
+	display: block;
+	text-align: center;
+	line-height: 15pt;
+	font-size: 10pt;
+	padding: 10pt;
+}
