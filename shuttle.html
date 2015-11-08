@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <head>
 
-	<title>Out of the Garden</title>
+	<title>Out of the Garden | Charity Routes</title>
 
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<meta name="description" content="View Wake Forest University shuttles in realtime. 
@@ -46,7 +46,7 @@
 
 		var warehouse=new google.maps.LatLng(36.0733679,-79.7916424);
 		
-		var school=new google.maps.LatLng(36.069748,-79.792282);
+		var school=new google.maps.LatLng(36.069212,-79.799215);
 
 		
 		shuttleLines.push(["black",12,36.0733679,-79.7916424,48,45,44,"black","Black Line"]);
@@ -62,12 +62,12 @@
 
 			markers.push(new google.maps.Marker({
 				position: {lat:36.0733679,lng:-79.7916424},
-				title: 'Hello World!'
+				title: 'Warehouse'
 			}));
 			
 			markers.push(new google.maps.Marker({
-				position: {lat:35.0733679,lng:-79.7916424},
-				title: 'Hello World!'
+				position: {lat:36.069212,lng:-79.799215},
+				title: 'School A'
 			}));
 			
 			for (i = 0; i < markers.length; i++)
@@ -92,6 +92,29 @@
 	        loadLine(0, map);
 
 	    }
+
+
+	    /*function displayRoute() {
+	    
+	    	var start = new google.maps.LatLng(36.0733679, -79.7916424);
+	    	var end = new google.maps.LatLng(36.069212, -79.799215);
+	    
+	    	var directionsDisplay = new google.maps.DirectionsRenderer();// also, constructor can get "DirectionsRendererOptions" object
+	    	directionsDisplay.setMap(map); // map should be already initialized.
+	    	
+	    	var request = {
+	    		origin : start,
+	    		destination : end,
+	    		travelMode : google.maps.TravelMode.DRIVING
+	    	};
+	        var directionsService = new google.maps.DirectionsService(); 
+	    	directionsService.route(request, function(response, status) {
+	    		if (status == google.maps.DirectionsStatus.OK) {
+	    			directionsDisplay.setDirections(response);
+	    		}
+	    	});
+	    }*/
+
 	    
 	    google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -436,7 +459,7 @@
 
 				<div class="shuttleIcon"><img src="img/shuttleIcons/blackShuttleIcon.png" width='30px' \></div>
 				<div class="shuttleInfo">
-					<span class="shuttleName">School 1</span><br>
+					<span class="shuttleName">School A</span><br>
 					<span class="shuttleStops">Warehouse to School 1</span>
 				</div>
 
