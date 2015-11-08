@@ -42,10 +42,12 @@
 
 		var stopTimes = [];
 
+
+
 		var refreshFunction;
 
 		
-		shuttleLines.push(["black",14,36.15100,-80.27915,48,45,44,"black","Black Line"]);
+		shuttleLines.push(["black",12,36.0733679,-79.7916424,48,45,44,"black","Black Line"]);
 		
 		
 		shuttleLines.push(["grayDay",14,36.130727,-80.25795,135,136,135,"gray","Gray Line"]);
@@ -69,9 +71,15 @@
 		function initialize()
 		{
 	        
-	        var mapOptions = { center: {lat:shuttleLines[0][2],lng:shuttleLines[0][3]}, zoom: shuttleLines[0][1]};
+	        var mapOptions = { center: {lat:36.0733679,lng:-79.7916424}, zoom: 12};
 
 	        var map = new google.maps.Map(document.getElementById('mapCanvas'), mapOptions);
+
+	        var marker = new google.maps.Marker({
+			    position: {lat: 36.0733679, lng: -79.7916424},
+			    map: map,
+			    title: 'Hello World!'
+			 });
 
 	        mapReferenceObject = map;
 
@@ -80,6 +88,18 @@
 	    }
 	    
 	    google.maps.event.addDomListener(window, 'load', initialize);
+
+	    function getLocation()
+	    {
+    		if (navigator.geolocation)
+    		{
+        		navigator.geolocation.watchPosition(showPosition);
+    		}
+    		else
+    		{ 
+        		x.innerHTML = "Geolocation is not supported by this browser.";
+        	}
+    	}
 
 	    function changeLine(lineID)
 		{
@@ -140,6 +160,7 @@
 		{
 
 			downloadRouteFile(lineID);
+			
 
 			if (mapPolyLine == null)
 			{
