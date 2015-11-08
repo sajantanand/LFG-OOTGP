@@ -40,7 +40,7 @@ header #logo .white
 
 #shuttleMap
 {	
-	width: 85%;
+	width: 80%;
 	float: left;
 	height: 90%;
 	position: relative;
@@ -112,13 +112,12 @@ header #logo .white
 
 #sidebar
 {
-	width: 15%;
+	width: 20%;
 	float:right;
 	overflow-y: hidden;
 	overflow-x: hidden;
 	height: 90%;
-	border-top: 1px solid;
-	border-color: #159BC3;
+	background-color: white;
 }
 
 #sidebar ul
@@ -246,12 +245,12 @@ header #logo .white
 
 #Yes
 {
-	padding-left:19px;
+	padding-left:53px;
 }
 
 #No
 {
-	padding-left:19px;
+	padding-left:53px;
 }
 
 
