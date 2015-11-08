@@ -30,7 +30,7 @@ header #logo
 	padding-top:17.5px;
 	position: absolute;`
 	top: 7%;
-	color: #1E5E73;
+	color: #159BC3;
 }
 
 header #logo .white
@@ -331,6 +331,21 @@ header #logo .white
 	padding: 10pt;
 }
 
+.moneyButton
+{
+                padding:6px 6px;
+                margin-top: 5px;
+                /*left:-8px;*/
+                border:2px solid #207cca;
+                background-color:#207cca;
+                color:#fafafa;
+}
+
+.moneyButton:hover  {
+                background-color:#fafafa;
+                color:#207cca;
+}
+
 form {
 				float: right;
                 width:40%;
@@ -340,7 +355,7 @@ form {
 .search {
                 padding:8px 15px;
                 background:rgba(50, 50, 50, 0.2);
-                border:0px solid #dbdbdb;
+                border:1px solid white;
                 color: white;
 }
 .searchButton {
