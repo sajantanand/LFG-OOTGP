@@ -30,6 +30,7 @@ header #logo .white
 
 form {
                 width: 100%;
+                text-align: center;
                 margin: 10px auto;
 }
 .search {
@@ -37,7 +38,6 @@ form {
                 background:rgba(50, 50, 50, 0.2);
                 border:0px solid #dbdbdb;
                 color: white;
-                float: right;
 }
 .searchButton {
                 position:relative;
