@@ -15,9 +15,9 @@
 
 	<link type="text/css" rel="stylesheet" href="style.css" />
 
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
 
 	
 	<script type="text/javascript">
@@ -42,46 +42,41 @@
 
 		var stopTimes = [];
 
-
-
 		var refreshFunction;
+
+		var warehouse=new google.maps.LatLng(36.0733679,-79.7916424);
+		
+		var school=new google.maps.LatLng(36.069748,-79.792282);
 
 		
 		shuttleLines.push(["black",12,36.0733679,-79.7916424,48,45,44,"black","Black Line"]);
 		
 		
-		shuttleLines.push(["grayDay",14,36.130727,-80.25795,135,136,135,"gray","Gray Line"]);
-		
-		
-		shuttleLines.push(["grayNight",15,36.13666,-80.27808,135,136,135,"night","Gray Line"]);
-		
-		
-		shuttleLines.push(["gold",14,36.13562,-80.28790,219,175,78,"gold","Gold Line"]);
-		
-		
-		shuttleLines.push(["freshmen",14,36.13290,-80.26672,137,78,78,"green","Freshmen Line"]);
-		
-		
-		shuttleLines.push(["hanes",12,36.11834,-80.29604,93,125,92,"hanes","Hanes Mall Line"]);
-		
-		
-		shuttleLines.push(["downtown",13,36.12125,-80.25824,71,80,131,"downtown","Deacon's Downtown Line"]);
-		
-		
 		function initialize()
 		{
 	        
-	        var mapOptions = { center: {lat:36.0733679,lng:-79.7916424}, zoom: 12};
+	        var mapProp = { center: {lat:36.073265,lng:-79.789955}, zoom: 14, mapTypeId:google.maps.MapTypeId.ROADMAPs};
 
-	        var map = new google.maps.Map(document.getElementById('mapCanvas'), mapOptions);
+	        var map = new google.maps.Map(document.getElementById('mapCanvas'), mapProp);
 
 	        var marker = new google.maps.Marker({
 			    position: {lat: 36.0733679, lng: -79.7916424},
 			    map: map,
-			    title: 'Hello World!'
+			    title: 'OOTG Warehouse'
 			 });
 
 	        mapReferenceObject = map;
+
+			var myTrip = [warehouse,school];
+			var flightPath=new google.maps.Polyline({
+			  path:myTrip,
+			  strokeColor:"#0078E7",
+			  strokeOpacity:0.7,
+			  strokeWeight:6.5
+			  });
+
+			flightPath.setMap(map);
+			
 
 	        loadLine(0, map);
 
@@ -101,28 +96,10 @@
         	}
     	}
 
-	    function changeLine(lineID)
-		{
-
-			clearInterval(refreshFunction);
-
-			mapReferenceObject.setOptions({center:{lat:shuttleLines[lineID][2], lng: shuttleLines[lineID][3]}, zoom:shuttleLines[lineID][1]});
-
-			clearMarkers();
-
-			loadLine(lineID, mapReferenceObject);
-
-			if(document.getElementById("scheduleContent").innerHTML != "")
-			{
-				showSchedule();
-			}
-
-		}
-
 		function loadLine(lineID, map)
 		{
 
-	        loadShuttleSchedule(lineID);
+			//go thru these and see which ones you don't need
 
 	        loadPolyline(lineID, map);
 
@@ -134,27 +111,6 @@
 
 		}
 
-		function initMap() {
-			  var map = new google.maps.Map(document.getElementById('map'), {
-			    zoom: 3,
-			    center: {lat: 0, lng: -180},
-			    mapTypeId: google.maps.MapTypeId.TERRAIN
-			  });
-
-			  var flightPlanCoordinates = [
-			    {lat: 36.068616, lng: -79.961352},
-			    {lat: 36.144404, lng: -79.937958}
-			  ];
-			  var flightPath = new google.maps.Polyline({
-			    path: flightPlanCoordinates,
-			    geodesic: true,
-			    strokeColor: '#FF0000',
-			    strokeOpacity: 1.0,
-			    strokeWeight: 2
-			  });
-
-			  flightPath.setMap(map);
-		}
 
 	    function loadPolyline(lineID, map)
 		{
@@ -464,86 +420,8 @@
 				</div>
 
 				</li>
-			</a>
-					<a href="#" onclick="changeLine(1)">
-				<li>
-
-				<div class="shuttleIcon"><img src="img/shuttleIcons/grayDayShuttleIcon.png" width='30px' \></div>
-				<div class="shuttleInfo">
-					<span class="shuttleName">Gray Day Line</span><br>
-					<span class="shuttleStops">Sophomore Lot, Church Lot, Bus Stop Shelter, Freshman Lot</span>
-				</div>
-
-				</li>
-			</a>
-					<a href="#" onclick="changeLine(2)">
-				<li>
-
-				<div class="shuttleIcon"><img src="img/shuttleIcons/grayNightShuttleIcon.png" width='30px' \></div>
-				<div class="shuttleInfo">
-					<span class="shuttleName">Gray Night Line</span><br>
-					<span class="shuttleStops">ZSR, Sophomore Lot, Piccolo, Reynolds Gym, and more...</span>
-				</div>
-
-				</li>
-			</a>
-					<a href="#" onclick="changeLine(3)">
-				<li>
-
-				<div class="shuttleIcon"><img src="img/shuttleIcons/goldShuttleIcon.png" width='30px' \></div>
-				<div class="shuttleInfo">
-					<span class="shuttleName">Gold Line</span><br>
-					<span class="shuttleStops">ZSR, Crowne Polo, Crowne Park, Crystal Lake, WFU Gatehouse</span>
-				</div>
-
-				</li>
-			</a>
-					<a href="#" onclick="changeLine(4)">
-				<li>
-
-				<div class="shuttleIcon"><img src="img/shuttleIcons/freshmenShuttleIcon.png" width='30px' \></div>
-				<div class="shuttleInfo">
-					<span class="shuttleName">Freshmen Line</span><br>
-					<span class="shuttleStops">Collins and South Hall, UCC Freshmen Lot</span>
-				</div>
-
-				</li>
-			</a>
-					<a href="#" onclick="changeLine(5)">
-				<li>
-
-				<div class="shuttleIcon"><img src="img/shuttleIcons/hanesShuttleIcon.png" width='30px' \></div>
-				<div class="shuttleInfo">
-					<span class="shuttleName">Hanes Mall Line</span><br>
-					<span class="shuttleStops">Benson, Hanes Mall, Sherwood Plaza, Target</span>
-				</div>
-
-				</li>
-			</a>
-					<a href="#" onclick="changeLine(6)">
-				<li>
-
-				<div class="shuttleIcon"><img src="img/shuttleIcons/downtownShuttleIcon.png" width='30px' \></div>
-				<div class="shuttleInfo">
-					<span class="shuttleName">Deacon's Downtown Line</span><br>
-					<span class="shuttleStops">The Last Resort, Tate's Bar, Finnigan's Pub, Benson</span>
-				</div>
-
-				</li>
-			</a>
 		
 		</ul>	
-
-		<div id="iphoneAppAd">
-			Download the RideTheWake iPhone App
-			<div id="appIcon">
-				<a href="https://itunes.apple.com/us/app/ride-the-wake/id387439113"><img src="img/iphoneIcon.png" width="120px"></a>
-			</div>
-		</div>
-
-		<div id="about">
-			Developed by: Niclas Ladd '16<br>Faculty Advisor: Daniel A. Cañas<br><br>Department of Computer Science<br>Wake Forest University
-		</div>
 
 	</div>
 
