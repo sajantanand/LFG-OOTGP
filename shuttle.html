@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <head>
 
-	<title>WFU | RideTheWake</title>
+	<title>Out of the Garden</title>
 
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<meta name="description" content="View Wake Forest University shuttles in realtime. 
@@ -112,6 +112,28 @@
 
 	        autoRefresh(lineID, map);
 
+		}
+
+		function initMap() {
+			  var map = new google.maps.Map(document.getElementById('map'), {
+			    zoom: 3,
+			    center: {lat: 0, lng: -180},
+			    mapTypeId: google.maps.MapTypeId.TERRAIN
+			  });
+
+			  var flightPlanCoordinates = [
+			    {lat: 36.068616, lng: -79.961352},
+			    {lat: 36.144404, lng: -79.937958}
+			  ];
+			  var flightPath = new google.maps.Polyline({
+			    path: flightPlanCoordinates,
+			    geodesic: true,
+			    strokeColor: '#FF0000',
+			    strokeOpacity: 1.0,
+			    strokeWeight: 2
+			  });
+
+			  flightPath.setMap(map);
 		}
 
 	    function loadPolyline(lineID, map)
@@ -393,7 +415,7 @@
 
 <div id="container">
 
-	<header><div id="logo"><span class="gold">Wake Forest University</span> Kevin</div></header>
+	<header><div id="logo"><span class="white">Out of the Garden Project</span> Routes</div></header>
 
 
 	<div id="shuttleMap">
@@ -407,7 +429,7 @@
 
 	<div id="sidebar">
 
-		<div class = "title">Shuttle Routes</div>
+		<div class = "title">Delivery Routes</div>
 
 		<ul>
 
@@ -416,8 +438,8 @@
 
 				<div class="shuttleIcon"><img src="img/shuttleIcons/blackShuttleIcon.png" width='30px' \></div>
 				<div class="shuttleInfo">
-					<span class="shuttleName">Black Line</span><br>
-					<span class="shuttleStops">Alaris Village, Deacon Ridge, Crowne Oaks, Bus Stop Shelter</span>
+					<span class="shuttleName">School 1</span><br>
+					<span class="shuttleStops">Warehouse to School 1</span>
 				</div>
 
 				</li>
@@ -489,7 +511,7 @@
 				</li>
 			</a>
 		
-		</ul>
+		</ul>	
 
 		<div id="iphoneAppAd">
 			Download the RideTheWake iPhone App

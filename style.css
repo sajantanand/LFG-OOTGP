@@ -18,7 +18,7 @@ html, body
 
 header
 {
-	background-color: #20292C;
+	background-color: 	;
 	height: 10%;
 	color: #FFFFFF;
 	font-size: 19pt;
@@ -29,11 +29,12 @@ header #logo
 	margin-left: 20pt;
 	position: absolute;
 	top: 3%;
+	color: #1E5E73;
 }
 
-header #logo .gold
+header #logo .white
 {
-	color: #DDB039;
+	color: white;
 }
 
 #shuttleMap
