@@ -27,6 +27,7 @@ header
 header #logo
 {
 	margin-left: 20pt;
+	padding-top:17.5px;
 	position: absolute;`
 	top: 3%;
 	color: #1E5E73;
@@ -39,7 +40,7 @@ header #logo .white
 
 #shuttleMap
 {	
-	width: 71%;
+	width: 85%;
 	float: left;
 	height: 90%;
 	position: relative;
@@ -111,11 +112,13 @@ header #logo .white
 
 #sidebar
 {
-	width: 29%;
+	width: 15%;
 	float:right;
-	overflow-y: scroll;
+	overflow-y: hidden;
 	overflow-x: hidden;
 	height: 90%;
+	border-top: 1px solid;
+	border-color: #159BC3;
 }
 
 #sidebar ul
@@ -181,36 +184,74 @@ header #logo .white
 	height: 48em;
 	padding-right: 10px;
 	float: top;
+	color:#159BC3;
+	font-weight: 700;
 }
 
-.infoIcon
+.infoIcon1
 {
 	float:left;
 	padding-left:15px;
-	padding-top:21px;
+	padding-top:15px;
+	padding-right:8px;
+}
+
+.infoIcon2
+{
+	float:left;
+	padding-left:15px;
+	padding-top:10px;
+	padding-right:8px;
+}
+
+.infoIcon3
+{
+	float:left;
+	padding-left:15px;
+	padding-top:14px;
 	padding-right:8px;
 }
 
 #sidebarInfo1
 {
 	margin-top:10px;
-	/*position: absolute;*/
 }
 
 #sidebarInfo2
 {
 	float:top;
-	/*position:relative;*/
-	padding-top: 0;
-	margin-top:-430px;
+	padding-top: 19px;
+	margin-top:-440px;
+	border-top: 1px solid;
+	border-color:#159BC3;
 }
 
 #sidebarInfo3
 {
 	float:top;
-	/*position:relative;*/
+	padding-top: 15px;
+	padding-bottom: 5px;
+	margin-top: -450px;
+	border-top: 1px solid;
+	border-color: #159BC3;
+
+}
+
+#sidebarInfo4
+{
+	float:top;
 	padding-top: 0;
-	margin-top: -430px;
+	margin-top: -455px;
+}
+
+#Yes
+{
+	padding-left:19px;
+}
+
+#No
+{
+	padding-left:19px;
 }
 
 
@@ -260,6 +301,7 @@ form {
 				float: right;
                 width:500px;
                 margin:10px auto;
+                padding-top: 6px;
 }
 .search {
                 padding:8px 15px;
