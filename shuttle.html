@@ -22,7 +22,7 @@
 	
 	<script type="text/javascript">
 
-		var mapReferenceObject;
+		var mapReferenceObject;			//used by sajant
 
 		var shuttleMarkerReference;
 
@@ -44,15 +44,17 @@
 
 		var refreshFunction;
 
-		var geocoder;
+		var geocoder;				//used by sajant
 
 		var warehouse=new google.maps.LatLng(36.068616,-79.961352);
 
 		var school=new google.maps.LatLng(36.080456,-79.866621);		//Morehead Elementary
 
-		var markers = [];
+		var markers = [];				//used by sajant
 
-		var polyLines = [];
+		var polyLines = [];				//used by sajant
+
+		var distances = [];				//used by sajant
 
 		shuttleLines.push(["black",12,36.0733679,-79.7916424,48,45,44,"black","Black Line"]);
 			
@@ -426,6 +428,7 @@
 		{
 			var address1 = document.getElementById("form1").elements["starting"].value;
 			var address2 = document.getElementById("form1").elements["destination"].value
+			var temp;
 			//document.getElementById("demo").innerHTML = address1;
 			//window.alert(document.getElementById("form1"));
 			geocoder.geocode( { 'address': address1}, function(results, status) {
@@ -440,6 +443,12 @@
 					*/
 
 					var myTrip = [results[0].geometry.location,warehouse];
+					temp = results[0].geometry.location;
+					//window.alert(results[0].geometry.location.lat());
+					//havershire(results[0].geometry.location,warehouse)
+					//document.getElementById("demo").innerHTML = 0;
+					distances.push(havershire(results[0].geometry.location,warehouse));
+					//document.getElementById("demo").innerHTML = distances[0];
 					polyLines.push(new google.maps.Polyline({
 					  path:myTrip,
 					  strokeColor:"#1D1D1D",
@@ -447,7 +456,7 @@
 					  strokeWeight:6.5
 					  }));
 					
-				
+					//var image = "location.png";
 					markers[2] = new google.maps.Marker({
 						position: results[0].geometry.location,
 						title: 'Starting'
@@ -474,6 +483,11 @@
 					});
 					*/
 					var myTrip = [school,results[0].geometry.location];
+
+					distances.push(havershire(school,results[0].geometry.location));
+					distances.push(havershire(warehouse,school));
+					distances.push(havershire(temp, results[0].geometry.location));
+					//document.getElementById("demo").innerHTML = distances[3];
 					polyLines.push(new google.maps.Polyline({
 					  path:myTrip,
 					  strokeColor:"#1D1D1D",
@@ -490,12 +504,24 @@
 					polyLines[2].setMap(mapReferenceObject);
 					//document.getElementById("demo").innerHTML = results[0].geometry.location.lat();
 				} 
-				else
-				{
-					//window.alert("Geocode was not successful for the following reason: " + status);
-				}
 			});
 
+
+
+		}
+
+		function havershire( point1, point2 )
+		{
+			
+			var pLat = (point2.lat() - point1.lat());
+			//window.alert(Math.pow(pLat, 2));
+			var pLong = (point2.lng() - point1.lng());
+			//window.alert(pLong);
+			var pHypot = Math.sqrt(Math.pow(pLat, 2) + Math.pow(pLong, 2));
+			//w.alert(pHypot * 66);
+			return pHypot * 66;
+			
+			
 		}
 
 	</script>

@@ -1,0 +1,53 @@
+html, body
+{
+	padding: 0;
+	margin: 0;
+	background: #E5E5E5;
+	font-family: Helvetica;
+	height: 100%;
+}
+
+header
+{
+	background-color: black;
+	height: 10%;
+	color: #FFFFFF;
+	font-size: 19pt;
+}
+
+header #logo
+{
+	margin-left: 20pt;
+	position: absolute;
+	top: 3%;
+	color: #1E5E73;
+}
+
+header #logo .white
+{
+	color: white;
+}
+
+form {
+                width: 100%;
+                margin: 10px auto;
+}
+.search {
+                padding:8px 15px;
+                background:rgba(50, 50, 50, 0.2);
+                border:0px solid #dbdbdb;
+                color: white;
+                float: right;
+}
+.searchButton {
+                position:relative;
+                padding:6px 15px;
+                /*left:-8px;*/
+                border:2px solid #207cca;
+                background-color:#207cca;
+                color:#fafafa;
+}
+.searchButton:hover  {
+                background-color:#fafafa;
+                color:#207cca;
+}
