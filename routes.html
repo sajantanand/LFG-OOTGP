@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<head>
+
+	<title>Out of the Garden | Charity Routes</title>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta name="description" content="Plan routes to aid Out of the Garden Project." />
+	<meta name="KEYWORDS" content="Out of the Garden Project, charity, philantrophy, Greensboro, North Carolina, Lincoln Financial, LFG, codelinc, feeding, food, backpacks, mobel, markets" />
+
+	<link rel="icon" type="image/png" href="favicon.ico">
+
+	<link type="text/css" rel="stylesheet" href="style.css" />
+
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
+
+	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+
+	
+	<script type="text/javascript">
+
+		var mapReferenceObject;			//used by sajant
+
+		var geocoder;				//used by sajant
+
+		var warehouse=new google.maps.LatLng(36.068616,-79.961352);
+
+		var school=new google.maps.LatLng(36.080456,-79.866621);		//Morehead Elementary
+
+		var markers = [];				//used by sajant
+
+		var polyLines = [];				//used by sajant
+
+		var distances = [];				//used by sajant
+
+		var addresses = [];
+			
+		function initialize()
+		{
+	        
+	        var mapOptions = { center: {lat:36.073265,lng:-79.789955}, zoom: 11, mapTypeId:google.maps.MapTypeId.ROADMAPs};
+
+	        var map = new google.maps.Map(document.getElementById('mapCanvas'), mapOptions);
+
+	        geocoder = new google.maps.Geocoder();
+
+			markers.push(new google.maps.Marker({
+				position: warehouse,
+				title: 'Warehouse'
+			}));
+			
+			markers.push(new google.maps.Marker({
+				position: school,
+				title: 'School'
+			}));
+
+	        mapReferenceObject = map;
+
+			var myTrip = [warehouse,school];
+			polyLines.push(new google.maps.Polyline({
+			  path:myTrip,
+			  strokeColor:"#0078E7",
+			  strokeOpacity:0.7,
+			  strokeWeight:6.5
+			  }));
+
+	        loadLine(0, map);
+
+	    }
+
+
+
+	    
+	    google.maps.event.addDomListener(window, 'load', initialize);
+
+	    function getLocation()
+	    {
+    		if (navigator.geolocation)
+    		{
+        		navigator.geolocation.watchPosition(showPosition);
+    		}
+    		else
+    		{ 
+        		x.innerHTML = "Geolocation is not supported by this browser.";
+        	}
+    	}
+
+		function rgbToHex(r, g, b)
+		{
+
+    		return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+
+		}
+
+		function routeAppears()
+		{
+
+			var requestUrl = "https://www.google.com/maps/dir/" + addresses[0]+"/C3+Greensboro,+300+North+Carolina+68,+Greensboro,+NC+27409/Morehead+Elementary+School,+4630+Tower+Road,+Greensboro,+NC+27410/" + addresses[1] + "/";
+			var replaced = requestUrl.split(' ').join('+');
+
+
+			document.getElementById("gmapURL").href = replaced;
+
+			document.getElementById("gmapURL").innerHTML = "Link to turn-by-turn navigation."
+		}
+
+		function searchClicked()
+		{
+			var address1 = document.getElementById("form1").elements["starting"].value;
+			var address2 = document.getElementById("form1").elements["destination"].value
+			var temp;
+
+			addresses.push(address1);
+			addresses.push(address2);
+
+			geocoder.geocode( { 'address': address1}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK)
+				{
+					
+					var myTrip = [results[0].geometry.location,warehouse];
+					temp = results[0].geometry.location;
+
+					distances.push(havershire(results[0].geometry.location,warehouse));
+					polyLines.push(new google.maps.Polyline({
+					  path:myTrip,
+					  strokeColor:"#1D1D1D",
+					  strokeOpacity:0.7,
+					  strokeWeight:6.5
+					  }));
+					
+					markers[2] = new google.maps.Marker({
+						position: results[0].geometry.location,
+						title: 'Starting'
+					});
+
+					for (i = 0; i < markers.length; i++)
+					{
+						markers[i].setMap(mapReferenceObject);
+					}
+					polyLines[0].setMap(mapReferenceObject);
+					polyLines[1].setMap(mapReferenceObject);
+				} 
+			});
+
+			geocoder.geocode( { 'address': address2}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK)
+				{
+					var myTrip = [school,results[0].geometry.location];
+
+					distances.push(havershire(school,results[0].geometry.location));
+					distances.push(havershire(warehouse,school));
+					distances.push(havershire(temp, results[0].geometry.location));
+					//document.getElementById("demo").innerHTML = distances[3];
+					polyLines.push(new google.maps.Polyline({
+					  path:myTrip,
+					  strokeColor:"#1D1D1D",
+					  strokeOpacity:0.7,
+					  strokeWeight:6.5
+					  }));
+				
+					markers[3] = new google.maps.Marker({
+						position: results[0].geometry.location,
+						title: 'Starting'
+					});
+
+					markers[3].setMap(mapReferenceObject);
+					polyLines[2].setMap(mapReferenceObject);
+					//document.getElementById("demo").innerHTML = results[0].geometry.location.lat();
+					document.getElementById("miles").innerHTML = Math.abs((distances[3] - (distances[0]+distances[1]+distances[2])).toFixed(2));
+					document.getElementById("money").innerHTML = ((distances[0]+distances[1]+distances[2]) * .14).toFixed(2);
+					//document.getElementById("money").innerHTML = distances[1];
+				} 
+			});
+
+
+
+		}
+
+		function havershire( point1, point2 )
+		{
+			
+			var pLat = (point2.lat() - point1.lat());
+			//window.alert(Math.pow(pLat, 2));
+			var pLong = (point2.lng() - point1.lng());
+			//window.alert(pLong);
+			var pHypot = Math.sqrt(Math.pow(pLat, 2) + Math.pow(pLong, 2));
+			//w.alert(pHypot * 66);
+			return pHypot * 66;
+			
+			
+		}
+
+
+	</script>
+
+</head>
+
+<body>
+
+<div id="container">
+
+
+	<header>
+		<div id="logo"><span class="white">Out of the Garden Project</span> Routes</div>
+		<div id="searchForm">
+			<form id="form1">
+	    		<input type="text" class="search" name="starting" placeholder="Starting Location" required>
+
+	    		<input type="text" class="search" name="destination" placeholder="Destination" required>
+	    		<input type="button" class="searchButton" onclick="searchClicked()" value="Search">
+			</form>
+		</div>
+	</header>
+
+	<div id="shuttleMap">
+		<div id="mapCanvas"></div>
+		<!--
+		<div id="statusPanel">
+			<b><span id="line">Black Line</span></b>
+			<br><span id="showSchedule"><a href="#" onClick="showSchedule()">▹ Show shuttle schedule</a></span>
+			<div id="scheduleContent"></div>
+		</div>
+		-->
+	</div>
+
+	<div id="sidebar">
+
+		<div class = "title">Delivery Routes</div>
+
+		<ul>
+
+					<!--<a href="#" onclick="changeLine(0)">-->
+			<div id="sidebarInfoTop">
+				<li>
+					<div class="route">
+						<span class="shuttleName">School A</span>
+					</div>
+				</li>
+			</div>
+
+			<div id="sidebarInfo1">
+				<li>
+					<div class="infoIcon1"><img src="heart.png" width='30px' \></div>
+					<div class="routeInfo">On your way to your destination, help us deliver 15 backpacks to feed the homeless!</div>
+				</li>
+			</div>
+
+			<div id="sidebarInfo2">
+				<li>
+					<div class="infoIcon2"><img src="gas.png" width='30px' \></div>
+					<div class="routeInfo">Save $<span id="money"></span> on gas through charitable tax refunds!</div>
+					<div class="milage">Extra miles driven <span id="miles"></span></div>		
+				</li>
+			</div>
+
+			<div id="sidebarInfo3">
+				<li>
+					<div class="infoIcon3"><img src="dollar.png" width='30px' \></div>
+					<div class="routeInfo">Would you like to donate these savings in gas to the Out of the Garden Project?</div>
+				</li>
+			</div>
+
+			<div id="sidebarInfo4">
+				<li>
+					<div id="Yes"><button class="moneyButton" onClick="parent.location='donate.html'">Yes, I would love to donate!</button></div>		
+					<div id="No"><button class="moneyButton" id="noButton" onclick="routeAppears()">I just want to make the ride!</button></div>
+				</li>
+			</div>
+
+			<div id="sidebarInfo5">
+				<li>
+					<a href="hello" class = "mapurl" id="gmapURL"></a>
+				</li>
+			</div>
+
+			<div id="sidebarInfo6">
+				<li>
+					<div class="infoIcon3"><img src="facebook.png" width='30px' \></div>
+					<div class="routeInfo">Connect to Facebook to tell your friends about Out of the Garden?</div>
+				</li>
+			</div>
+			
+		</ul>	
+
+	</div>
+
+</div>
+
+</body>
+
+</html>
