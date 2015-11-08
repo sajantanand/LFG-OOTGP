@@ -29,7 +29,7 @@ header #logo
 	margin-left: 20pt;
 	padding-top:17.5px;
 	position: absolute;`
-	top: 3%;
+	top: 7%;
 	color: #1E5E73;
 }
 
@@ -179,12 +179,27 @@ header #logo .white
 .routeInfo 
 {
 	font-size:8pt;
-	padding-top:5px;
+	padding-top:15px;
 	height: 48em;
 	padding-right: 10px;
 	float: top;
 	color:#159BC3;
 	font-weight: 700;
+}
+
+.milage
+{
+	font-size:8pt;
+	padding-top:10px;
+	height: 36em;
+	padding-right: 10px;
+	margin-top: -480px;
+	margin-left: 20%;
+	padding-bottom: 100px;
+	float: top;
+	color:#159BC3;
+	font-weight: 700;
+
 }
 
 .infoIcon1
@@ -243,6 +258,26 @@ header #logo .white
 	margin-top: -455px;
 }
 
+.mapurl
+{
+	margin-left: 25px;
+}
+
+#sidebarInfo5
+{
+	padding-top: 50px;
+	margin-top: 10px;
+	border-top: 1px solid;
+	border-color: #159BC3;
+}
+
+#sidebarInfo6
+{
+	float:top;
+	padding-top: 0;
+	margin-top: 50px;
+}
+
 #Yes
 {
 	padding-left:53px;
@@ -298,7 +333,7 @@ header #logo .white
 
 form {
 				float: right;
-                width:500px;
+                width:40%;
                 margin:10px auto;
                 padding-top: 6px;
 }

@@ -1,4 +1,13 @@
-html, body
+html
+{
+	padding: 0;
+	margin: 10px;
+	background: #E5E5E5;
+	font-family: Helvetica;
+	height: 100%;
+}
+
+body
 {
 	padding: 0;
 	margin: 0;
@@ -17,9 +26,9 @@ header
 
 header #logo
 {
-	margin-left: 20pt;
+	margin-left: 75pt;
 	position: absolute;
-	top: 3%;
+	top: 5%;
 	color: #1E5E73;
 }
 
@@ -29,25 +38,55 @@ header #logo .white
 }
 
 form {
-                width: 100%;
-                text-align: center;
-                margin: 10px auto;
+    width: 100%;
+    margin: 10px auto;
 }
-.search {
-                padding:8px 15px;
-                background:rgba(50, 50, 50, 0.2);
-                border:0px solid #dbdbdb;
-                color: white;
+
+.label {
+	margin-bottom: 0px;
+}
+
+#searchForm
+{
+	margin-left: 400px;
+	margin-top: 50px;
+}
+
+.input {
+	padding:8px 15px;
+	background:rgba(50, 50, 50, 0.2);
+	border:0px solid #dbdbdb;
+	color: black;
+	width: 40%
+}
+
+#smaller {
+	width: 3%;
+}
+
+.radio {
+	margin-top: 20px;
+}
+
+.date {
+	padding:8px 15px;
+	background:rgba(50, 50, 50, 0.2);
+	border:0px solid #dbdbdb;
+	color: black;
+	width: 6.6%
 }
 .searchButton {
-                position:relative;
-                padding:6px 15px;
-                /*left:-8px;*/
-                border:2px solid #207cca;
-                background-color:#207cca;
-                color:#fafafa;
+	position:relative;
+	padding:6px 15px;
+	/*left:-8px;*/
+	border:2px solid #207cca;
+	background-color:#207cca;
+	color:#fafafa;
+	margin-left: 150px;
+	margin-top: 15px;
+
 }
 .searchButton:hover  {
-                background-color:#fafafa;
-                color:#207cca;
+	background-color:#fafafa;
+	color:#207cca;
 }

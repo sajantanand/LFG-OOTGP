@@ -10,15 +10,27 @@
 	</header>
 	<div id="searchForm">
 			<form id="form1">
-	    		<p>Name: <input type="text" class="search" name="name" placeholder="Name" required></p>
-	    		<p>Email: <input type="text" class="search" name="email" placeholder="E-mail" required></p>
-	    		<input type="radio" name="frequency" value="One-Time">One-Time
-  				<input type="radio" name="frequency" value="Recurring" checked>Recurring
-	    		<p>Amount: <input type="text" class="search" name="amount" placeholder="Amount" required></p>
-	    		<p>Credit Card Number: <input type="text" class="search" name="number" placeholder="Number" required></p>
-	    		<p>Security Code <input type="text" class="search" name="code" placeholder="code" required></p>
-	    		<p>Expiration Month <input type="text" class="search" name="month" placeholder="Month" required> Expiration Day <input type="text" class="search" name="dat" placeholder="Day" required></p>
-	    		<input type="button" class="searchButton" onclick="searchClicked()" value="Search">
+	    		<p class="label">Name:</p> 
+	    		<input type="text" class="input" name="name" placeholder="Name" required>
+
+	    		<p class="label">Email:</p>
+	    		<input type="text" class="input" name="email" placeholder="E-mail" required>
+
+	    		<p class="label">Amount:</p>
+	    		<input type="text" class="input" name="amount" placeholder="Amount" required>
+
+	    		<p class="label">Credit Card Number:</p>
+	    		<input type="text" class="input" name="number" placeholder="Number" required>
+
+	    		<p class = "label">Security Code:
+	    		<input type="text" class="input" id="smaller" name="code" placeholder="Code" required>
+
+	    		Expiration Date: <input type="text" class="date" name="date" placeholder="MM/YYYY" required></p>
+	    		<input type="radio" name="frequency" class = "radio" value="One-Time">One-Time
+
+  				<input type="radio" name="frequency" class = "radio" value="Recurring" checked>Recurring
+  				<br>
+	    		<input type="button" class="searchButton" align="center" onclick="searchClicked()" value="Submit">
 			</form>
 		</div>
 	</body>
