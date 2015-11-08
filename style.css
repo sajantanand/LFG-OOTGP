@@ -245,12 +245,19 @@ header #logo .white
 
 #Yes
 {
-	padding-left:53px;
+	width:100%;
+	margin:auto;
 }
 
 #No
 {
-	padding-left:53px;
+	margin:auto;
+}
+
+#yesButton
+{
+	width:80%;
+	margin:auto;
 }
 
 
