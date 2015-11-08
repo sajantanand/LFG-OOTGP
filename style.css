@@ -27,7 +27,7 @@ header
 header #logo
 {
 	margin-left: 20pt;
-	position: absolute;
+	position: absolute;`
 	top: 3%;
 	color: #1E5E73;
 }
@@ -141,31 +141,78 @@ header #logo .white
 	float: left;
 }
 
-#sidebar ul a li .shuttleIcon
+#sidebar ul a li .infoIcon
 {
-	width: 30px;
+	width: 35px;
+	height:35px;
 	float: left;
-	margin-right: 8pt;
+	margin-right: 0;
+	margin-top: 16px;
+	padding-left: 0;
+	padding-right: 0;
 }
 
-#sidebar ul a li .shuttleInfo
+#sidebar ul a li .route
 {
 	width: 72%;
 	float: left;
 }
 
-#sidebar ul a li .shuttleInfo .shuttleName
+#sidebar ul a li .route .shuttleName
 {
 	color: #000000;
 	font-size: 11pt;
+	padding-left: 48px;
 }
 
-#sidebar ul a li .shuttleInfo .shuttleStops
+#sidebar ul a li .route .shuttleStops
 {
 	font-size: 9pt;
 	color: #A0A0A0;
 	padding-top: 6pt;
+	padding-left: 10px;
+	width:100px;
 }
+
+.routeInfo 
+{
+	font-size:8pt;
+	padding-top:5px;
+	height: 48em;
+	padding-right: 10px;
+	float: top;
+}
+
+.infoIcon
+{
+	float:left;
+	padding-left:15px;
+	padding-top:21px;
+	padding-right:8px;
+}
+
+#sidebarInfo1
+{
+	margin-top:10px;
+	/*position: absolute;*/
+}
+
+#sidebarInfo2
+{
+	float:top;
+	/*position:relative;*/
+	padding-top: 0;
+	margin-top:-430px;
+}
+
+#sidebarInfo3
+{
+	float:top;
+	/*position:relative;*/
+	padding-top: 0;
+	margin-top: -430px;
+}
+
 
 .title
 {
@@ -176,22 +223,28 @@ header #logo .white
 	padding: 7pt;
 	font-size: 12pt;
 	background-color: #40494C;
+	border-bottom: 1px solid white;
 }
 
-#iphoneAppAd
+#sidebarInfoTop 
 {
-	width: 100%;
-	float: left;
+	background-color: #159BC3;
+	color: white;
 	text-align: center;
-	margin: 10pt 0 10pt 0;
-	font-size: 10pt;
+	padding-top:8px;
+	padding-bottom:13px;
+	height:12px;
+	border-bottom: 1px white;
 }
 
-#iphoneAppAd #appIcon
+#sidebarInfo1
 {
-	width: 120px;
-	margin: 10pt auto;
+	font-size:8pt;
+	padding-top:5px;
+	height: 48em;
+	padding-right: 10px;
 }
+
 
 #about
 {
