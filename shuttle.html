@@ -74,12 +74,22 @@
 	        var mapOptions = { center: {lat:36.0733679,lng:-79.7916424}, zoom: 12};
 
 	        var map = new google.maps.Map(document.getElementById('mapCanvas'), mapOptions);
+	        var markers = []
 
-	        var marker = new google.maps.Marker({
-			    position: {lat: 36.0733679, lng: -79.7916424},
-			    map: map,
-			    title: 'Hello World!'
-			 });
+			markers.push(new google.maps.Marker({
+				position: {lat:36.0733679,lng:-79.7916424},
+				title: 'Hello World!'
+			}));
+			
+			markers.push(new google.maps.Marker({
+				position: {lat:35.0733679,lng:-79.7916424},
+				title: 'Hello World!'
+			}));
+			
+			for (i = 0; i < markers.length; i++)
+			{
+			markers[i].setMap(map);
+			}
 
 	        mapReferenceObject = map;
 
@@ -138,7 +148,7 @@
 		{
 
 			downloadRouteFile(lineID);
-			
+
 
 			if (mapPolyLine == null)
 			{
@@ -414,7 +424,17 @@
 
 <div id="container">
 
-	<header><div id="logo"><span class="gold">Wake Forest University</span> Kevin</div></header>
+	<header>
+		<div id="logo"><span class="gold">Wake Forest University</span> Sajant</div>
+		<div id="searchForm">
+			<form>
+	    		<input type="text" class="search" placeholder="Starting Location" required>
+
+	    		<input type="text" class="search" placeholder="Destination" required>
+	    		<input type="button" class="searchButton" value="Search">
+			</form>
+		</div>
+	</header>
 
 
 	<div id="shuttleMap">

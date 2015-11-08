@@ -35,6 +35,7 @@ function showPosition(position) {
 </html>
 -->
 
+<!--
 <!DOCTYPE html>
 <html>
   <head>
@@ -77,7 +78,7 @@ Simple markers
 
 View this example full screen.
 JavaScriptJavaScript + HTML
-
+-->
 <!DOCTYPE html>
 <html>
   <head>
@@ -101,17 +102,30 @@ JavaScriptJavaScript + HTML
 
 function initMap() {
   var myLatLng = {lat: -25.363, lng: 131.044};
+  var myLatLng2 = {lat: -26.363, lng: 131.0465};
 
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 4,
     center: myLatLng
   });
 
-  var marker = new google.maps.Marker({
+  var markers = []
+
+  markers.push(new google.maps.Marker({
     position: myLatLng,
-    map: map,
     title: 'Hello World!'
-  });
+  }));
+
+  markers.push(new google.maps.Marker({
+    position: myLatLng2,
+    title: 'Hello World!'
+  }));
+
+  for (i = 0; i < markers.length; i++)
+  {
+    markers[i].setMap(map);
+  }
+  
 }
 
     </script>
@@ -119,3 +133,13 @@ function initMap() {
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhPKfZlYWmuVF7PV-G7ViJQTfgM6SwOwg &signed_in=true&callback=initMap"></script>
   </body>
 </html>
+<!--
+<link type="text/css" rel="stylesheet" href="search.css" />
+
+<form>
+    <input type="text" class="search" placeholder="Starting Location" required>
+
+    <input type="text" class="search" placeholder="Destination" required>
+    	<input type="button" class="searchButton" value="Search">
+</form>
+-->
